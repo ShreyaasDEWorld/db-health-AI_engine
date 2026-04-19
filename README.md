@@ -69,7 +69,13 @@ Agent-based system to monitor database health, detect anomalies, and generate AI
 ## Architecture
 collector → logs → trend_analysis → AI engine → reports
 
+## Agentic Flow
 
+- Collector Agent → gathers DB metrics  
+- Analyzer Agent → aggregates & detects anomalies  
+- AI Agent → performs root cause analysis  
+- Report Agent → generates human-readable output
+- 
 ## Run
 
 ```bash

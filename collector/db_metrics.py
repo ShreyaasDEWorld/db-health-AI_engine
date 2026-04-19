@@ -11,8 +11,10 @@ from dotenv import load_dotenv
 #from storage.db_config import get_all_db_configs
 from pathlib import Path
 from analyzer.health_rules import analyze_metrics
-from storage.file_writer_bk import save_health_report
+from storage.file_writer import save_health_report
 from storage.report_writer import save_readable_report
+from storage.report_writer import print_readable_report
+
 
 env_path = Path(__file__).resolve().parent.parent / ".env"
 load_dotenv(dotenv_path=env_path)
@@ -60,7 +62,8 @@ def load_db_configs():
 def collect_metrics(db_config):
     metrics = {
         "db_name": db_config["name"],
-        "timestamp": datetime.utcnow().isoformat(),
+        #"timestamp": datetime.utcnow().isoformat(),
+        "timestamp": datetime.now().isoformat(),
         "status": "OK",
         "data": {}
     }
@@ -251,10 +254,12 @@ if __name__ == "__main__":
 
     for d in data:
         print("\n==============================")
-        print(f"Database: {d['db_name']}")
+        #print(f"Database: {d['db_name']}")
+        
 
         if d["status"] == "OK":
             analysis = analyze_metrics(d)
+            print_readable_report(d, analysis)
 
             print(f"Score: {analysis['score']}")
             print(f"Severity: {analysis['severity']}")

@@ -1,47 +1,82 @@
-def generate_recommendations(record):
-    issues = record.get("issues", [])
-    metrics = record.get("metrics", {})
+import sys
+from pathlib import Path
 
-    recommendations = []
+# ✅ Fix import path FIRST
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 
-    for issue in issues:
+from dotenv import load_dotenv
+import os
 
-        if "Low index usage" in issue:
-            recommendations.append(
-                "Investigate missing indexes. Check slow queries and add indexes on filter/join columns."
-            )
+# Load .env
+env_path = Path(__file__).resolve().parent.parent / ".env"
+load_dotenv(dotenv_path=env_path)
 
-        if "High number of connections" in issue:
-            recommendations.append(
-                "Consider connection pooling (PgBouncer) or review application connection handling."
-            )
+from openai import OpenAI
 
-        if "Low cache hit ratio" in issue:
-            recommendations.append(
-                "Increase shared_buffers or analyze queries causing disk reads."
-            )
+# Initialize client
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-        if "Long running queries" in issue:
-            recommendations.append(
-                "Identify long-running queries and optimize them using EXPLAIN ANALYZE."
-            )
+# 🔥 Import history analyzer functions
+from analytics.history_analyzer import (
+    load_all_logs,
+    summarize_by_db,
+    generate_ai_summary
+)
 
-    if not recommendations:
-        recommendations.append("Database is healthy. No action required.")
 
-    return recommendations
+def generate_ai_recommendation(record, history_summary):
+    prompt = f"""
+You are a senior database performance engineer.
+
+Analyze the database health using BOTH current data and historical trends.
+
+OUTPUT FORMAT (STRICT):
+- Root Cause (max 3 bullet points)
+- Recommendations (max 5 bullet points, no repetition)
+
+DO NOT repeat points.
+DO NOT duplicate numbering.
+
+IMPORTANT:
+If score is high but issue frequency is high, treat it as a hidden problem.
+
+DATA:
+
+Database: {record['db_name']}
+Score: {record['health']['score']}
+Issues: {record['issues']}
+
+History:
+{history_summary}
+"""
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "You are a senior database performance engineer."},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.2
+    )
+
+    return response.choices[0].message.content
 
 
 if __name__ == "__main__":
+    # 🔥 Sample current record
     sample = {
         "db_name": "Ecom",
         "health": {"score": 90},
-        "metrics": {"index_usage_ratio": 0.0},
         "issues": ["Low index usage"]
     }
 
-    recs = generate_recommendations(sample)
+    # 🔥 Load real history
+    records = load_all_logs()
+    summary = summarize_by_db(records)
+    history = generate_ai_summary(summary)
 
-    print("\nRecommendations:")
-    for r in recs:
-        print(f"- {r}")
+    # 🔥 Generate AI output
+    result = generate_ai_recommendation(sample, history)
+
+    print("\nAI Recommendation:\n")
+    print(result)

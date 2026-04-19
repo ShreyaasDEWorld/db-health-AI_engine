@@ -77,6 +77,22 @@ def get_worst_db(summary):
 
     return worst_db, lowest_score
 
+def generate_ai_summary(summary):
+    lines = []
+
+    for db, data in summary.items():
+        avg_score = data["total_score"] / data["count"]
+        issue_pct = (data["issues"] / data["count"]) * 100
+
+        lines.append(
+            f"{db}: Avg Score {round(avg_score,2)}, Issue Frequency {round(issue_pct,2)}%"
+        )
+
+    worst_db, score = get_worst_db(summary)
+
+    lines.append(f"Worst performing database is {worst_db}")
+
+    return "\n".join(lines)
 
 if __name__ == "__main__":
     records = load_all_logs()

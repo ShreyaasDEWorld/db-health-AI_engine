@@ -10,3 +10,4 @@ A multi-database monitoring tool with:
 
 ```bash
 python collector/db_metrics.py
+python analytics/history_analyzer.py

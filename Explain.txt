@@ -1,0 +1,66 @@
+Goal of Phase 1
+Connect to DB → Collect basic health → Print + Save JSON
+
+Step 1:
+
+✔ Simple script (10–15 lines)
+✔ Collect 2–3 metrics only
+✔ Save JSON
+
+Step 2:
+
+✔ Add basic health rules
+
+Step 3:
+
+✔ Store in DB
+
+Step 4:
+
+✔ Add AI
+
+
+project/
+│
+├── collector/
+│   └── db_metrics.py
+│
+├── analyzer/
+│   └── health_rules.py
+│
+├── ai_engine/
+│   └── ai_recommender.py
+│
+├── storage/
+│   └── db.py
+│
+├── notifier/
+│   └── email_sender.py
+│
+├── scheduler/
+│   └── cron_jobs.sh
+
+
+
+
+🔥 What You Just Built (Important)
+
+we are now collect:
+
+Core Health
+Connections (total + active)
+DB size
+Locks
+Deadlocks
+Performance
+Cache hit ratio
+Slow queries
+Long-running queries
+Workload
+Transactions
+Temp files
+Structure Insight
+Top tables
+Index vs sequential scans
+Advanced
+Replication lag

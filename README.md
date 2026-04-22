@@ -6,12 +6,15 @@ A multi-database monitoring tool with:
 - JSON logging
 - AI-ready data pipeline
 
+<<<<<<< HEAD
 ## Overview
 Agent-based system to monitor database health, detect anomalies, and generate AI-driven recommendations.
 
 ## 🏗️ Architecture Diagram
 
 ```text
+=======
+>>>>>>> 4d0bc82 (Added AI trend analysis, anomaly detection, and JSON-based metrics pipeline and Orchestration Agent)
                 ┌────────────────────┐
                 │  DB Systems        │
                 │ (PostgreSQL etc.)  │
@@ -57,6 +60,7 @@ Agent-based system to monitor database health, detect anomalies, and generate AI
                 │ ai_trend_*.txt     │
                 │ report_*.txt       │
                 └────────────────────┘
+<<<<<<< HEAD
 ```
 
 ## Features
@@ -76,6 +80,12 @@ collector → logs → trend_analysis → AI engine → reports
 - AI Agent → performs root cause analysis  
 - Report Agent → generates human-readable output
 - 
+=======
+
+
+                
+
+>>>>>>> 4d0bc82 (Added AI trend analysis, anomaly detection, and JSON-based metrics pipeline and Orchestration Agent)
 ## Run
 
 ```bash

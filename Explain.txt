@@ -69,6 +69,9 @@ MVP Architecture(Model-View-Presenter)
 
 1)collector/db_metrics.py        → Agent 1 (Data Collector)
         ↓ (JSON logs)
+{       This module acts as the Collector Agent, 
+        responsible for connecting to multiple PostgreSQL databases, extracting performance metrics, 
+        analyzing health, and storing results for further AI processing.”"}
 
 2)analytics/history_analyzer.py  → Agent 2 (Reasoning / Aggregation)
         ↓ (summary / insights)

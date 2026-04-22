@@ -30,7 +30,7 @@ def get_latest_metrics_file():
 
 
 def run_ai_trend():
-
+    
     summary_file = get_latest_metrics_file()
 
     if not summary_file:
